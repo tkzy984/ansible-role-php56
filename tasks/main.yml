@@ -1,0 +1,16 @@
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+
+
+- include: "{{ role_path }}/tasks/install_php_on_{{ ansible_os_family }}.yml"
+
+
+- name: Set timezone to Asia/Tokyo
+  ini_file:
+    dest: "{{ php_ini_path }}"
+    section: Date
+    option: date.timezone
+    value: "{{ timezone }}"
+
+
+- include: "{{ role_path }}/tasks/install_composer.yml"

@@ -1,0 +1,47 @@
+---
+- name: Set build options
+  blockinfile:
+    dest: "{{ system_make_conf_path }}"
+    state: present
+    marker: '# {mark} PHP56 BUILD OPTIONS ANSIBLE MANAGED BLOCK'
+    block: |
+      .if ${.CURDIR} == "/usr/ports/lang/php56"
+      OPTIONS_SET+=DTRACE
+      .endif
+
+
+- name: Install PHP 7.0 with DTrace
+  portinstall: name=lang/php56 state=present
+
+
+- name: Lock php70 package
+  command: pkg lock php56
+
+
+- name: Install PHP Extensions
+  pkgng: name={{ item }} state=present
+  with_items:
+    - php56-session
+    - php56-mbstring
+    - php56-mcrypt
+    - php56-pdo
+    - php56-opcache
+    - php56-zip
+    - php56-xml
+    - php56-json
+    - php56-curl
+    - php56-pdo
+    - php56-pdo_mysql
+    - php56-ctype
+    - php56-hash
+    - php56-tokenizer
+    - php56-openssl
+
+
+- name: Copy php.ini-development to /usr/local/etc/php.ini
+  copy:
+    src: /usr/local/etc/php.ini-development
+    dest: "{{ php_ini_path }}"
+    mode: 0644
+    remote_src: True
+

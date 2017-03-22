@@ -1,0 +1,43 @@
+---
+- name: get PHP version
+  command: php -v
+  changed_when: False
+  register: php5_test_fact_php_version
+
+
+- name: assert PHP version is displayed and is at least version 5
+  assert:
+    that:
+      - "'PHP 5.' in php5_test_fact_php_version.stdout"
+
+      
+- name: get configured time zone
+  command: php -i | grep 'date.timezone'
+  changed_when: False
+  register: php5_test_fact_php_timezone
+
+
+- name: assert configured time zone is set correctly
+  assert:
+    that:
+      - "'Asia/Tokyo' in php5_test_fact_php_timezone.stdout"
+
+      
+- name: get active PHP configuration file - CentOS
+  command: php -i
+  changed_when: False
+  register: php5_test_fact_php_configuration_centos
+  when: ansible_distribution == "CentOS"
+
+
+#- name: assert active PHP configuration file is correct - CentOS
+#  assert:
+#    that:
+#      - "'Loaded Configuration File => /etc/php-cli.ini' in php5_test_fact_php_configuration_centos.stdout"
+#  when: ansible_distribution == "CentOS"
+
+
+- name: get composer version
+  command: /usr/local/bin/composer --version
+  changed_when: false
+  register: php5_test_composer_version

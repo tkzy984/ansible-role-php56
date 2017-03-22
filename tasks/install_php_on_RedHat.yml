@@ -1,0 +1,37 @@
+---
+- name: Install EPEL/Remi repository
+  yum: name={{ item }}
+  with_items:
+    - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    - yum-utils
+
+
+- name: Remi key installed
+  rpm_key:
+    key: "https://rpms.remirepo.net/RPM-GPG-KEY-remi"
+
+
+- name: Set php56 target
+  command: yum-config-manager --enable remi-php56
+
+
+- name: Install PHP and Extensions
+#  notify:
+#    - restart apache
+  yum:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items:
+    - php
+    - php-cli
+    - php-common
+    - php-mbstring
+    - php-pdo
+    - php-mysql
+    - php-pecl-xdebug
+    - php-pecl-memcache
+    - php-pecl-apcu
+    - php-process
+    - php-xml

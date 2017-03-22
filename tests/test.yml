@@ -1,0 +1,8 @@
+---
+- name: Setup and test php56 role
+  hosts: localhost
+  remote_user: root
+  roles:
+    - php56
+  tasks:
+    - include: test-case/main.yml

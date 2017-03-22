@@ -1,0 +1,10 @@
+---
+- name: Download composer-setup script
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: "/var/tmp/composer-setup.php"
+    mode: 0555
+
+
+- name: Install composer
+  command: php /var/tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer

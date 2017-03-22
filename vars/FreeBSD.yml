@@ -1,0 +1,3 @@
+---
+php_ini_path: /usr/local/etc/php.ini
+system_make_conf_path: /etc/make.conf
